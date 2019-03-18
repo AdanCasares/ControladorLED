@@ -1,20 +1,25 @@
-#include <IRremote.h>
+#include <IRremote.h>  //Tendréis que instalar la libreria
  
-const int RECV_PIN = 9;
+const int RECV_PIN = 9;  //recibiremos la información del mando por el pin 9
+
+//A continuación, creamos contantes con el valor de cada tecla del mando, que previamente hemos obtenido.
+//El código está configurado para que nos muestre por el Monitor serie el valor de cada tecla que recibe en tiempo real.
 const int mando_rojo = 20145;
 const int mando_verde = -29071;
 const int mando_amarillo = -14791;
 const int mando_azul = -31111;
- 
+
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
+//Asignamos los pines con los que trabajaremos.
 int alimentacion = 7;
 int rojo = 4;
 int verde = 5;
 int azul = 6;
 
 int valor;
+//Los estados nos permiten encender un color en concreto y apagarlo con una segunda pulsación.
 int estado_rojo = 0;
 int estado_verde = 0;
 int estado_azul = 0;
@@ -32,7 +37,7 @@ void setup()
  
 void loop()
 {
-   if(inicializar == 0){
+   if(inicializar == 0){  //Todos los LED comienzan apagados a la espera de su activación.
       digitalWrite(alimentacion, HIGH);
       digitalWrite(rojo, HIGH);
       digitalWrite(verde, HIGH);
@@ -42,7 +47,7 @@ void loop()
    
    if (irrecv.decode(&results))
    {
-      Serial.println(results.value);
+      Serial.println(results.value);  //nos muestra en el Monitor serie el valor de la techa que recibe.
       valor = results.value;
       Serial.println(valor);
 
@@ -51,7 +56,8 @@ void loop()
       case mando_rojo:
          if(estado_rojo==0){
             digitalWrite(alimentacion, HIGH);
-            digitalWrite(rojo, LOW);
+            digitalWrite(rojo, LOW);  //En la tira LED con la que he trabajado LOW=ENCENDIDO, HIGH=APAGADO
+                                      //Puede variar con otras tiras LED
             estado_rojo = 1;
          }
          else{
